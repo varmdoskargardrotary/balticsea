@@ -199,6 +199,9 @@
     </div>
 
     <script type="module">
+        // logga JSON payload
+        console.log("DATA:", JSON.stringify(data, null, 2));
+        
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getFirestore, collection, addDoc, onSnapshot, query } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
         import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
@@ -221,7 +224,7 @@
         const appId = 'varmdo-vattentest';
 
         // Tvinga debug-token för testning
-        //self.FIREBASE_APPCHECK_DEBUG_TOKEN = "cd63dad5-1adb-49e0-bbed-81bc47f5ac80"; 
+        self.FIREBASE_APPCHECK_DEBUG_TOKEN = "cd63dad5-1adb-49e0-bbed-81bc47f5ac80"; 
 
         // Initiera App Check
         const appCheck = initializeAppCheck(app, {
