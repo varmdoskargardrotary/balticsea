@@ -256,7 +256,8 @@
                         loadData();
                     }
                 });
-            } catch (err) { console.error(err); }
+            } catch (err) { console.error(err);
+                          alert("Fel vid inskick: " + err.message);}
         }
 
         function initMaps() {
