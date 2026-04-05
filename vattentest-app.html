@@ -247,8 +247,8 @@
                 isTokenAutoRefreshEnabled: true
             });
             console.log("Firebase App Check initierat!");
-        } catch (e) {
-            console.error("Kunde inte initiera App Check:", e);
+        } catch (err) {
+            console.warn("Kunde inte initiera App Check: fortsätter utan säkerhetslager", e);
         }
         
         let currentPos = [59.3293, 18.3869];
