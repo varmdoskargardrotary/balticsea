@@ -468,7 +468,7 @@
                 const testerCol = collection(db, 'artifacts', appId, 'public', 'data', 'tester');
                 await addDoc(testerCol, payload);
                 
-                document.getElementById('success-summary').innerHTML = `<b>${skola} klass ${klass}</b><br/>📍 ${plats}, ${datum}<br/><br/>Tack för er rapport!`;
+                document.getElementById('success-summary').innerHTML = `<b>${skola} klass ${klass}</b><br/>📍 ${plats}, ${datum}<br/><br/>Tack för er rapport, nu syns den på kartan tillsammans med tidigare rapporter`;
                 document.getElementById('success-modal').classList.remove('hidden');
                 
                 setTimeout(() => {
