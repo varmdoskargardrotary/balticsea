@@ -198,10 +198,7 @@
         </div>
     </div>
 
-    <script type="module">
-        // logga JSON payload
-        console.log("DATA:", JSON.stringify(data, null, 2));
-        
+    <script type="module">       
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getFirestore, collection, addDoc, onSnapshot, query } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
         import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
