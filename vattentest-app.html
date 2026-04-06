@@ -464,6 +464,7 @@
                 userId: auth.currentUser.uid
             };
 
+            // Tack-popup vid inskick, visas 3 sekunder och växlar sen till flik 2
             try {
                 const testerCol = collection(db, 'artifacts', appId, 'public', 'data', 'tester');
                 await addDoc(testerCol, payload);
@@ -513,7 +514,7 @@
             exploreMarkers.push(m);
         }
 
-       // Exportfunktion
+       // Exportfunktion - nedladdning av databasen, utom Rapportörskod och svar på sista frågan om väskan
        function downloadCSV() {
             if (testResults.length === 0) return;
             const headers = ["Datum", "Skola", "Klass", "Plats", "Lat", "Lng", "Temp", "Siktdjup", "Grumlighet", "Syre", "pH", "Kväve", "Fosfor", "Ecoli", "Alger", "Status", "Observationer"];
