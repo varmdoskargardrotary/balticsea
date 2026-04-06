@@ -513,18 +513,66 @@
             exploreMarkers.push(m);
         }
 
-        function downloadCSV() {
-            if (testResults.length === 0) return;
-            const headers = ["Datum", "Skola", "Klass", "Plats", "Lat", "Lng", "Temp", "Siktdjup", "Grumlighet", "Syre", "pH", "Kväve", "Fosfor", "Ecoli", "Alger", "Status", "Observationer"];
-            const rows = testResults.map(r => [
-                r.datumStr || "", r.skola, r.klass, r.plats, r.lat, r.lng, r.temp, r.sikt, r.grumlighet, r.syre, r.ph, r.kvave, r.fosfor, r.ecoli, r.alger, r.status, `"${r.obs?.replace(/"/g, '""')}"`
-            ]);
-            let csvContent = "data:text/csv;charset=utf-8,\uFEFF" + headers.join(";") + "\n" + rows.map(e => e.join(";")).join("\n");
-            const link = document.createElement("a");
-            link.href = encodeURI(csvContent);
-            link.download = `vattentest_${new Date().toISOString().split('T')[0]}.csv`;
-            link.click();
-        }
+       // Exportfunktion
+        function downloadExcel() {
+if (testResults.length === 0) return;
+
+const headers = ["Datum", "Skola", "Klass", "Plats", "Lat", "Lng", "Temp", "Siktdjup", "Grumlighet", "Syre", "pH", "Kväve", "Fosfor", "Ecoli", "Alger", "Status", "Observationer"];
+
+// Skapa XML-rader för Excel
+const headerRow = headers.map(h => `<Cell><Data ss:Type="String">${h}</Data></Cell>`).join("");
+
+const rows = testResults.map(r => {
+    const rowData = [
+        r.datumStr || "", r.skola, r.klass, r.plats, r.lat, r.lng, 
+        r.temp, r.sikt, r.grumlighet, r.syre, r.ph, r.kvave, 
+        r.fosfor, r.ecoli, r.alger, r.status, r.obs || ""
+    ];
+    
+    return "<Row>" + rowData.map(value => {
+        // Tvätta värden från specialtecken som kan förstöra XML-strukturen
+        const safeValue = String(value)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;');
+        
+        // Kolla om det är ett nummer eller en sträng för korrekt sortering i Excel
+        const type = isNaN(value) || value === "" ? "String" : "Number";
+        return `<Cell><Data ss:Type="${type}">${safeValue}</Data></Cell>`;
+    }).join("") + "</Row>";
+}).join("");
+
+// Komplett Excel XML-struktur
+const excelTemplate = `<?xml version="1.0"?>
+
+
+<?mso-application progid="Excel.Sheet"?>
+
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+xmlns:o="urn:schemas-microsoft-com:office:office"
+xmlns:x="urn:schemas-microsoft-com:office:excel"
+xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+xmlns:html="http://www.w3.org/TR/REC-html40">
+<Worksheet ss:Name="Vattentest">
+
+<Table>
+<Row>${headerRow}</Row>
+${rows}
+</Table>
+</Worksheet>
+</Workbook>`;
+
+const blob = new Blob([excelTemplate], { type: "application/vnd.ms-excel" });
+const url = URL.createObjectURL(blob);
+
+const link = document.createElement("a");
+link.href = url;
+link.download = `vattentest_${new Date().toISOString().split('T')[0]}.xls`;
+link.click();
+
+// Städa upp URL-objektet
+setTimeout(() => URL.revokeObjectURL(url), 100);
+}
 
         window.addEventListener('load', init);
     </script>
